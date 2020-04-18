@@ -1,0 +1,69 @@
+unit Unit1;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  fphttpclient;
+
+type
+
+  { TForm1 }
+
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Button2: TButton;
+    Memo1: TMemo;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    { private declarations }
+  public
+    { public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  List: TStringList;
+  html: string;
+  s: string;
+  luckyNum: integer;
+  times: integer;
+  sentense: string;
+
+implementation
+
+{$R *.lfm}
+
+{ TForm1 }
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin // on start
+  try
+    html := TFPCustomHTTPClient.SimpleGet('https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-usa.txt');
+  finally
+  end;
+  List := TStringList.Create;
+  try
+    List.LineBreak := #10;
+    List.Text := html;
+  finally
+  end;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  luckyNum := Random(10000);
+  Memo1.Caption := Memo1.Caption + List[luckyNum] + ' ';
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  Memo1.Caption := '';
+end;
+
+end.
+
